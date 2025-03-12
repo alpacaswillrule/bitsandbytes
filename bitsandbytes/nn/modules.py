@@ -11,7 +11,33 @@ from torch import Tensor, device, dtype, nn
 import torch.nn.functional as F
 
 import bitsandbytes as bnb
-from bitsandbytes.autograd._functions import get_tile_inds, undo_layout
+from bitsandbytes.autograd._functions import get_tile_inds, undo_layout, matmul_4bit
+# Copyright (c) Facebook, Inc. and its affiliates.
+#
+# This source code is licensed under the MIT license found in the
+# LICENSE file in the root directory of this source tree.
+import copy
+from typing import Any, Dict, Optional, TypeVar, Union, overload
+import warnings
+
+import torch
+from torch import Tensor, device, dtype, nn
+import torch.nn.functional as F
+
+# Copyright (c) Facebook, Inc. and its affiliates.
+#
+# This source code is licensed under the MIT license found in the
+# LICENSE file in the root directory of this source tree.
+import copy
+from typing import Any, Dict, Optional, TypeVar, Union, overload
+import warnings
+
+import torch
+from torch import Tensor, device, dtype, nn
+import torch.nn.functional as F
+
+import bitsandbytes as bnb
+from bitsandbytes.autograd._functions import get_tile_inds, undo_layout, matmul_4bit
 from bitsandbytes.functional import QuantState
 from bitsandbytes.optim import GlobalOptimManager
 from bitsandbytes.utils import (
@@ -493,7 +519,8 @@ class Linear4bit(nn.Linear):
         print(f"bnb.__file__: {bnb.__file__}")
         print("=" * 50)
 
-        return bnb.matmul_4bit(x, self.weight.t(), bias=bias, quant_state=self.weight.quant_state).to(inp_dtype)
+        # Use the directly imported matmul_4bit function instead of accessing it through bnb
+        return matmul_4bit(x, self.weight.t(), bias=bias, quant_state=self.weight.quant_state).to(inp_dtype)
 
 
 class LinearFP4(Linear4bit):
