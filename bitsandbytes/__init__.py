@@ -22,3 +22,12 @@ __pdoc__ = {
 }
 
 __version__ = "0.45.4.dev0"
+
+# Debug prints
+import sys
+print("=" * 50)
+print(f"bitsandbytes version: {__version__}")
+print(f"bitsandbytes module path: {__file__}")
+print(f"matmul_4bit in dir(bitsandbytes): {'matmul_4bit' in dir()}")
+print(f"All available functions: {[name for name in dir() if not name.startswith('__')]}")
+print("=" * 50)

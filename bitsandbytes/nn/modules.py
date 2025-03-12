@@ -481,6 +481,18 @@ class Linear4bit(nn.Linear):
 
         bias = None if self.bias is None else self.bias.to(self.compute_dtype)
 
+        # Debug prints
+        print("=" * 50)
+        print("Linear4bit.forward() - Debug Info")
+        print(f"x.shape: {x.shape}, x.dtype: {x.dtype}")
+        print(f"weight.shape: {self.weight.shape}, weight.dtype: {self.weight.dtype}")
+        print(f"bias: {bias is not None}")
+        print(f"quant_state: {self.weight.quant_state is not None}")
+        print(f"bnb module dir: {dir(bnb)}")
+        print(f"matmul_4bit in bnb: {'matmul_4bit' in dir(bnb)}")
+        print(f"bnb.__file__: {bnb.__file__}")
+        print("=" * 50)
+
         return bnb.matmul_4bit(x, self.weight.t(), bias=bias, quant_state=self.weight.quant_state).to(inp_dtype)
 
 
